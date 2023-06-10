@@ -1,0 +1,26 @@
+.button {
+    -fx-cursor: hand;
+    -fx-background-color: white;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb);
+    -fx-font-weight: semibold;
+    -fx-font-size: 14px;
+}
+
+.button:pressed, .button.active {
+  -fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb);
+}
+
+.table-view {
+    -fx-background-radius: 5px; /* Raio dos cantos do plano de fundo */
+}
+
+.table-row-cell {
+    -fx-background-radius: 5px; /* Raio dos cantos do plano de fundo das células */
+}
+
+.table-cell {
+    -fx-background-radius: 5px; /* Raio dos cantos do plano de fundo das células */
+}
