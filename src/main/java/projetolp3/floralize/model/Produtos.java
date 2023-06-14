@@ -12,14 +12,17 @@ public class Produtos {
     
     private String nome_produto;
     private String nome_fornecedor;
+    private String descricao;
     private double preco;
     private int qtd;
+    
 
-    public Produtos(String nome_produto, String nome_fornecedor, int qtd,  double preco) {
+    public Produtos(String nome_produto, String nome_fornecedor, int qtd,  double preco, String descricao) {
         this.nome_produto = nome_produto;
         this.nome_fornecedor = nome_fornecedor;
         this.preco = preco;
         this.qtd = qtd;
+        this.descricao = descricao;
     }
 
     public String getNome_produto() {
@@ -53,6 +56,16 @@ public class Produtos {
     public void setQtd(int qtd) {
         this.qtd = qtd;
     }
+    
+        public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    
+    
 }
 
 

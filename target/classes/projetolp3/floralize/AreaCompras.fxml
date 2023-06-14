@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF8EB;" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.AreaComprasController">
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="500.0" prefWidth="945.0" style="-fx-background-color: #FFF8EB;" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.AreaComprasController">
    <children>
       <VBox prefHeight="500.0" prefWidth="174.0">
          <children>
@@ -112,10 +112,14 @@
             </Button>
          </children>
       </VBox>
-      <StackPane fx:id="stackPane" layoutX="174.0" prefHeight="500.0" prefWidth="645.0">
+      <StackPane fx:id="stackPane" layoutX="174.0" prefHeight="500.0" prefWidth="773.0">
          <children>
-            <Pane fx:id="paneHome" prefHeight="487.0" prefWidth="614.0" />
-            <Pane fx:id="paneProdutos" prefHeight="487.0" prefWidth="614.0" />
+            <Pane fx:id="paneHome" prefHeight="414.0" prefWidth="773.0" />
+            <Pane fx:id="paneProdutos" prefHeight="439.0" prefWidth="773.0">
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </Pane>
          </children>
       </StackPane>
    </children>

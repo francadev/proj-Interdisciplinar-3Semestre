@@ -1,4 +1,14 @@
+projetolp3\floralize\bd\Conexao.class
 projetolp3\floralize\App.class
+module-info.class
+projetolp3\floralize\ProdutosController$1.class
+projetolp3\floralize\HomeController.class
+projetolp3\floralize\ProdutosController.class
+projetolp3\floralize\model\ItemCarrinho.class
+projetolp3\floralize\bd\ConexaoMySQL.class
 projetolp3\floralize\TelaInicialController.class
 projetolp3\floralize\AreaComprasController.class
-projetolp3\floralize\HomeController.class
+projetolp3\floralize\ConfirmacaoPedidoController.class
+projetolp3\floralize\model\AppState.class
+projetolp3\floralize\DetalhesProdutosController.class
+projetolp3\floralize\model\Produtos.class

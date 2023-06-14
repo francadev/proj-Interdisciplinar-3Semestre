@@ -9,16 +9,21 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import projetolp3.floralize.model.AppState;
+import projetolp3.floralize.model.ItemCarrinho;
 
 /**
  * FXML Controller class
@@ -57,6 +62,7 @@ public class AreaComprasController implements Initializable {
     
     @FXML
     private Pane paneProdutos;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,13 +110,16 @@ public class AreaComprasController implements Initializable {
         Pane pane = FXMLLoader.load(App.class.getResource("Produtos.fxml"));  
         stackPane.getChildren().setAll(pane);
         paneProdutos.toFront();
+        
     }
 
     @FXML
-    private void telaHome() throws IOException{
+    private void telaHome() throws IOException{     
+        //AppState appState = AppState.getInstance();
+        //Set<ItemCarrinho> carrinho = appState.getCarrinho();
         Pane pane = FXMLLoader.load(App.class.getResource("Home.fxml"));  
         stackPane.getChildren().setAll(pane);
-        //paneProdutos.toFront();
+        //--
     }
     
     private void noBold() {

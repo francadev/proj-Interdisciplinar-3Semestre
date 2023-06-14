@@ -5,7 +5,7 @@
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb);
-    -fx-font-weight: semibold;
+    -fx-font-weight: 600;
     -fx-font-size: 14px;
 }
 
@@ -23,4 +23,24 @@
 
 .table-cell {
     -fx-background-radius: 5px; /* Raio dos cantos do plano de fundo das células */
+}
+
+#detailButton{
+    -fx-background-color: #FFD179;  
+}
+
+#addButton{
+    -fx-background-color: #A3CDFF;    
+}
+
+#deleteButton{
+    -fx-background-color: #FFA179;
+}
+
+#detailButton:hover, #addButton:hover, #deleteButton:hover{
+    -fx-font-size: 12px;
+}
+
+#btnRefresh {
+    -fx-font-size: 12px;
 }
