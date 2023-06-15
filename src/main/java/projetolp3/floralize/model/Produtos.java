@@ -16,7 +16,11 @@ public class Produtos {
     private double preco;
     private int qtd;
     
-
+    public Produtos(String nome_produto, int qtd) {
+        this.nome_produto = nome_produto;
+        this.qtd = qtd;
+    }
+    
     public Produtos(String nome_produto, String nome_fornecedor, int qtd,  double preco, String descricao) {
         this.nome_produto = nome_produto;
         this.nome_fornecedor = nome_fornecedor;
@@ -24,7 +28,7 @@ public class Produtos {
         this.qtd = qtd;
         this.descricao = descricao;
     }
-
+    
     public String getNome_produto() {
         return nome_produto;
     }

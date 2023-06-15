@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="400.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.FornecedoresController">
+   <children>
+      <Text fx:id="txtProdutos" layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FORNECEDORES" />
+      <TableView fx:id="tbvFornecedores" layoutX="68.0" layoutY="88.0" prefHeight="224.0" prefWidth="669.0" style="-fx-border-radius: 10px;">
+         <columns>
+            <TableColumn fx:id="tbcNome" prefWidth="207.9999885559082" text="NOME" />
+            <TableColumn fx:id="tbcQuantidade" prefWidth="184.00001525878906" text="QTD. EM PRODUTOS" />
+            <TableColumn fx:id="tbcUnidades" prefWidth="180.66665649414062" text="QTD. TOTAL EM UNIDADES" />
+            <TableColumn fx:id="tbcDetalhes" minWidth="0.0" prefWidth="97.33331298828125" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

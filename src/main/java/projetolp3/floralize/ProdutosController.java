@@ -141,18 +141,6 @@ public class ProdutosController implements Initializable {
     }
     
     public void loadCarrinho() throws IOException {
-        /*Stage stage = (Stage) tbvProdutos.getScene().getWindow();
-
-        //Carregar a nova cena
-        FXMLLoader fxmlLoader = new FXMLLoader(
-     App.class.getResource("ConfirmacaoPedido.fxml"));
-        Scene dash = new Scene(fxmlLoader.load());
-
-        //Exibir a nova cena
-        stage.setScene(dash);
-        stage.setTitle("CONFIRMAR PEDIDO");
-        stage.show();*/
-        
         Pane pane = FXMLLoader.load(App.class.getResource("ConfirmacaoPedido.fxml"));  
         anchorPane.getChildren().setAll(pane);
     }

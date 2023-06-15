@@ -83,10 +83,20 @@ public class AreaComprasController implements Initializable {
             btnHome.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
         }
         
-        if (actionEvent.getSource() == btnProdutos) {
+        else if (actionEvent.getSource() == btnProdutos) {
             telaProdutos(); 
             noBold();
             btnProdutos.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
+        }
+        else if (actionEvent.getSource() == btnFornecedores) {
+            telaFornecedores(); 
+            noBold();
+            btnFornecedores.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
+        }
+        else if (actionEvent.getSource() == btnForum) {
+            //telaProdutos(); 
+            noBold();
+            btnForum.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
         }
     }
     
@@ -104,6 +114,11 @@ public class AreaComprasController implements Initializable {
         stage.setTitle("Tela Inicial");
         stage.show();
     }
+    @FXML
+    private void telaHome() throws IOException{     
+        Pane pane = FXMLLoader.load(App.class.getResource("Home.fxml"));  
+        stackPane.getChildren().setAll(pane);
+    }
     
     @FXML
     private void telaProdutos() throws IOException{
@@ -114,12 +129,9 @@ public class AreaComprasController implements Initializable {
     }
 
     @FXML
-    private void telaHome() throws IOException{     
-        //AppState appState = AppState.getInstance();
-        //Set<ItemCarrinho> carrinho = appState.getCarrinho();
-        Pane pane = FXMLLoader.load(App.class.getResource("Home.fxml"));  
+    private void telaFornecedores() throws IOException{     
+        Pane pane = FXMLLoader.load(App.class.getResource("Fornecedores.fxml"));  
         stackPane.getChildren().setAll(pane);
-        //--
     }
     
     private void noBold() {
