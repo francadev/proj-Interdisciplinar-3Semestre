@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="500.0" prefWidth="945.0" style="-fx-background-color: #FFF8EB;" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.AreaFornecedorController">
+   <children>
+      <VBox prefHeight="500.0" prefWidth="174.0" style="-fx-background-color: #ffefd2;">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ÁREA DO FORNECEDOR">
+               <VBox.margin>
+                  <Insets left="15.0" top="15.0" />
+               </VBox.margin>
+            </Text>
+            <Button fx:id="btnHome" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clickButton" prefHeight="29.0" prefWidth="163.0" text="   Home" textAlignment="CENTER">
+               <padding>
+                  <Insets left="25.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imagens/icon-home.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="100.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnProdutos" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clickButton" prefHeight="29.0" prefWidth="163.0" text="   Produtos" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="25.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="24.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imagens/icon-produtos.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDados" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clickButton" prefHeight="29.0" prefWidth="163.0" text="   Dados" textAlignment="CENTER">
+               <padding>
+                  <Insets left="25.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="24.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imagens/icon-fornecedor.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnVoltar" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#voltarTelaInicial" prefHeight="40.0" prefWidth="163.0" style="-fx-background-color: transparent; -fx-font-weight: normal;" text=" VOLTAR" textAlignment="CENTER">
+               <padding>
+                  <Insets left="25.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="24.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imagens/icon-voltar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="170.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <StackPane fx:id="stackPane" layoutX="174.0" prefHeight="500.0" prefWidth="773.0">
+         <children>
+            <Pane fx:id="paneHome" prefHeight="414.0" prefWidth="773.0" />
+            <Pane fx:id="paneProdutos" prefHeight="439.0" prefWidth="773.0">
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </Pane>
+         </children>
+      </StackPane>
+      <Line endX="165.99998474121094" endY="2.543131586207892E-6" layoutX="6.0" startX="165.99998474121094" startY="500.0000305175781" stroke="#0000000e" />
+   </children>
+</AnchorPane>

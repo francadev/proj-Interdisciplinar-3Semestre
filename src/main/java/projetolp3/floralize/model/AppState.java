@@ -4,7 +4,9 @@
  */
 package projetolp3.floralize.model;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,9 +16,11 @@ import java.util.Set;
 public class AppState {
     private static final AppState instance = new AppState();
     private Set<ItemCarrinho> carrinho;
+    private Map<String, Integer> quantidadesAtualizadas;
 
     private AppState() {
-        carrinho = new LinkedHashSet<>();
+        carrinho = new LinkedHashSet<>();   
+        quantidadesAtualizadas = new HashMap<>();
     }
 
     public static AppState getInstance() {
@@ -25,5 +29,13 @@ public class AppState {
 
     public Set<ItemCarrinho> getCarrinho() {
         return carrinho;
+    }
+    
+     public void setQuantidadeAtualizada(String nomeProduto, int quantidade) {
+        quantidadesAtualizadas.put(nomeProduto, quantidade);
+    }
+
+    public int getQuantidadeAtualizada(String nomeProduto) {
+        return quantidadesAtualizadas.getOrDefault(nomeProduto, -1);
     }
 }

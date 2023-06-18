@@ -44,16 +44,26 @@ public class TelaInicialController implements Initializable {
             //Carregar a nova cena
             FXMLLoader fxmlLoader = new FXMLLoader(
          App.class.getResource("AreaCompras.fxml"));
-            Scene dash = new Scene(fxmlLoader.load());
+            Scene compras = new Scene(fxmlLoader.load());
 
             //Exibir a nova cena
-            stage.setScene(dash);
+            stage.setScene(compras);
             stage.setTitle("ÁREA DE COMPRAS");
             stage.show();
     }
     
     @FXML
     public void areaFornecedor(ActionEvent event) throws IOException{
+        Stage stage = (Stage) btnAreaFornecedor.getScene().getWindow();
 
+            //Carregar a nova cena
+            FXMLLoader fxmlLoader = new FXMLLoader(
+         App.class.getResource("AreaFornecedor.fxml"));
+            Scene fornecedor = new Scene(fxmlLoader.load());
+
+            //Exibir a nova cena
+            stage.setScene(fornecedor);
+            stage.setTitle("ÁREA DO FORNECEDOR");
+            stage.show();
     }
 }

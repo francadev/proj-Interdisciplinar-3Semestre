@@ -23,54 +23,36 @@ import javafx.stage.Stage;
  *
  * @author r0039435
  */
-
-
-public class AreaComprasController implements Initializable {
+public class AreaFornecedorController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
     
     @FXML
-    private Button btnHome;
-    
-    @FXML
-    private Button btnProdutos;
-    
-    @FXML
-    private Button btnFornecedores;
+    private Button btnDados;
 
     @FXML
-    private Button btnForum;
-    
+    private Button btnHome;
+
+    @FXML
+    private Button btnProdutos;
+
     @FXML
     private Button btnVoltar;
-    
+
+    @FXML
+    private Pane paneHome;
+
+    @FXML
+    private Pane paneProdutos;
+
     @FXML
     private AnchorPane rootPane;
 
     @FXML
-    private StackPane stackPane;    
-    
-    @FXML
-    private Pane paneHome;
-    
-    @FXML
-    private Pane paneProdutos;
-    
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        try {  
-            telaHome();
-            btnHome.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        //Definir como pane principal (visível para o usuário)
-        paneHome.toFront();
-    }
-    
+    private StackPane stackPane;
+
     @FXML
     public void clickButton(ActionEvent actionEvent) throws IOException {
         if (actionEvent.getSource() == btnHome) {
@@ -84,18 +66,20 @@ public class AreaComprasController implements Initializable {
             disableStyle();
             btnProdutos.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
         }
-        else if (actionEvent.getSource() == btnFornecedores) {
-            telaFornecedores(); 
-            disableStyle();
-            btnFornecedores.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
-        }
-        else if (actionEvent.getSource() == btnForum) {
-            telaForum(); 
-            disableStyle();
-            btnForum.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
-        }
+        
     }
     
+    @FXML
+    private void telaHome() throws IOException{     
+        Pane pane = FXMLLoader.load(App.class.getResource("HomeFornecedor.fxml"));  
+        stackPane.getChildren().setAll(pane);
+    }
+    @FXML
+    private void telaProdutos() throws IOException{     
+        Pane pane = FXMLLoader.load(App.class.getResource("ProdutosFornecedor.fxml"));  
+        stackPane.getChildren().setAll(pane);
+    }
+
     public void voltarTelaInicial() throws IOException {
         //obter palco para trocar de cena (tela)
         Stage stage = (Stage) rootPane.getScene().getWindow();
@@ -110,36 +94,16 @@ public class AreaComprasController implements Initializable {
         stage.setTitle("Tela Inicial");
         stage.show();
     }
-    @FXML
-    private void telaHome() throws IOException{     
-        Pane pane = FXMLLoader.load(App.class.getResource("Home.fxml"));  
-        stackPane.getChildren().setAll(pane);
-    }
     
-    @FXML
-    private void telaProdutos() throws IOException{
-        Pane pane = FXMLLoader.load(App.class.getResource("Produtos.fxml"));  
-        stackPane.getChildren().setAll(pane);
-        paneProdutos.toFront();
-        
-    }
-
-    @FXML
-    private void telaFornecedores() throws IOException{     
-        Pane pane = FXMLLoader.load(App.class.getResource("Fornecedores.fxml"));  
-        stackPane.getChildren().setAll(pane);
-    }
-    
-    @FXML
-    private void telaForum() throws IOException{     
-        Pane pane = FXMLLoader.load(App.class.getResource("Forum.fxml"));  
-        stackPane.getChildren().setAll(pane);
-    }
-    
-    private void disableStyle() { 
-        btnFornecedores.setStyle("-fx-background-color: #FFFFFF;");
-        btnForum.setStyle("-fx-background-color: #FFFFFF;");
+    private void disableStyle() {        
+        btnDados.setStyle("-fx-background-color: #FFFFFF;");
         btnHome.setStyle("-fx-background-color: #FFFFFF;");
         btnProdutos.setStyle("-fx-background-color: #FFFFFF;");
     }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
 }

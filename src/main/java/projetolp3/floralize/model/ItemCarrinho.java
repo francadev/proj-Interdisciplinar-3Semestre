@@ -15,12 +15,16 @@ public class ItemCarrinho {
     private String fornecedor;
     private double preco;
     private int quantidade;
+    private int id_produto;
+    private int id_fornecedor;
 
-    public ItemCarrinho(String nomeProduto, String fornecedor, double preco, int quantidade) {
+    public ItemCarrinho(String nomeProduto, String fornecedor, double preco, int quantidade, int id_produto, int id_fornecedor) {
         this.nomeProduto = nomeProduto;
         this.fornecedor = fornecedor;
         this.preco = preco;
         this.quantidade = quantidade;
+        this.id_produto = id_produto;
+        this.id_fornecedor = id_fornecedor;
     }
     
     @Override
@@ -72,5 +76,22 @@ public class ItemCarrinho {
         this.quantidade = quantidade;
     }
 
+    public int getId_produto() {
+        return id_produto;
+    }
+
+    public void setId_produto(int id_produto) {
+        this.id_produto = id_produto;
+    }
+
+    public int getId_fornecedor() {
+        return id_fornecedor;
+    }
+
+    public void setId_fornecedor(int id_fornecedor) {
+        this.id_fornecedor = id_fornecedor;
+    }
+
+    
     
 }

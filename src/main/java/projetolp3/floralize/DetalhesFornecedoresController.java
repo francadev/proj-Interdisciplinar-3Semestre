@@ -68,7 +68,7 @@ public class DetalhesFornecedoresController implements Initializable {
         System.out.println("loadProdutosFornecedores: "+nome_do_fornecedor);
         
         connection = new ConexaoMySQL().getConnection();
-        query = "SELECT nome_produto, qtd FROM `view_produtos_descricao` WHERE nome_fornecedor = ?";
+        query = "SELECT nome_produto, qtd FROM `view_produtos` WHERE nome_fornecedor = ?";
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, nome_do_fornecedor); 
         resultSet = preparedStatement.executeQuery();

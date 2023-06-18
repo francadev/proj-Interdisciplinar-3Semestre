@@ -33,7 +33,7 @@
       <Label layoutX="664.0" layoutY="240.0" text="Total:" />
       <Button layoutX="691.0" layoutY="46.0" mnemonicParsing="false" onAction="#refreshTableCarrinho" prefHeight="31.0" prefWidth="24.0" style="-fx-background-color: transparent;" styleClass="#btnRefresh" stylesheets="@css/style.css">
          <graphic>
-            <ImageView fx:id="btnRefresh" fitHeight="23.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="btnRefresh" fitHeight="23.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@imagens/icon-refresh.png" />
                </image>
@@ -55,5 +55,6 @@
             <Font size="14.0" />
          </font>
       </Button>
+      <Button id="realizarPedido" layoutX="652.0" layoutY="300.0" mnemonicParsing="false" onAction="#confirmarPedido" text="Realizar pedido" />
    </children>
 </AnchorPane>
