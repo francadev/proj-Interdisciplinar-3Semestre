@@ -71,6 +71,7 @@ public class ProdutosFornecedorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadDataProdutos();
+        refreshTable();
     }
 
     public void loadDataProdutos() {
@@ -84,45 +85,51 @@ public class ProdutosFornecedorController implements Initializable {
         tbcPreco.setCellValueFactory(new PropertyValueFactory<>("qtd"));
     }
 
-    public void adicionarProduto(){
-        
-       /*FXMLLoader fxmlLoader = new FXMLLoader(
-    App.class.getResource("AlterarProduto.fxml"));
-
-       try {
+  public void adicionarProduto() {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("AlterarProduto.fxml"));
+        try {
             Parent parent = fxmlLoader.load();
-            Scene scene = new Scene(parent);
+            AlterarProdutoController alterarProdutoController = fxmlLoader.getController();
+            alterarProdutoController.setProdutosFornecedorController(this); // Pass the reference to the controller
+
             Stage stage = new Stage();
-            stage.setScene(scene);
+            stage.setScene(new Scene(parent));
             stage.initStyle(StageStyle.UTILITY);
+            stage.setOnHidden(event -> refreshTable()); // Add refreshTable() call when the window is closed
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-       
-       FXMLLoader fxmlLoader = new FXMLLoader(
-    App.class.getResource("AlterarProduto.fxml"));
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutosFornecedorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        AlterarProdutoController alterarProdutoController = fxmlLoader.getController();
-        alterarProdutoController.setUpdate(true);
-        //produtosFornecedorController.setTextField(p.getNome_produto(), p.getNome_fornecedor(), p.getQtd(), p.getPreco(), p.getDescricao());
-        Parent parent = fxmlLoader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent));
-        stage.initStyle(StageStyle.UTILITY);
-        stage.show();
     }
+    
+    public void checkForNewRecords() {
+        int lastRecordCount = ListaProdutos.size();
+
+        // Execute a query para obter a quantidade atual de registros
+        try {
+            query = "SELECT COUNT(*) FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int currentRecordCount = resultSet.getInt(1);
+
+                if (currentRecordCount > lastRecordCount) {
+                    // Há novos registros na tabela
+                    lastRecordCount = currentRecordCount;
+                    refreshTable();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosFornecedorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     public void refreshTable() {
         try {
             ListaProdutos.clear();
-
+            
             query = "SELECT * FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();

@@ -37,11 +37,11 @@
     -fx-background-color: #FFA179;
 }
 
-#editButton{
+#editButton, #limpar{
     -fx-background-color: #FDFFA3;
 }
 
-#detailButton:hover, #addButton:hover, #deleteButton:hover, #buttonForum:hover, #realizarPedido:hover, #editButton:hover, #deleteButton:hover, #addBdButton:hover{
+#detailButton:hover, #addButton:hover, #deleteButton:hover, #buttonForum:hover, #realizarPedido:hover, #editButton:hover, #deleteButton:hover, #addBdButton:hover, #salvar:hover, #limpar:hover{
     -fx-font-size: 12px;
 }
 
@@ -53,14 +53,6 @@
     -fx-background-color: #A3CDFF;
 }
 
-#realizarPedido{
-    -fx-background-color: #A4FFA3;
-}
-
-#okPedido{
-    -fx-background-color: #A4FFA3;
-}
-
-#addBdButton{
+#addBdButton, #salvar, #okPedido, #realizarPedido{
     -fx-background-color: #A4FFA3;
 }

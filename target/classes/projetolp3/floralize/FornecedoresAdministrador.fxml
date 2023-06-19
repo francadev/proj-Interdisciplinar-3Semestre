@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="400.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.FornecedoresAdministradorController">
+   <children>
+      <Text fx:id="txtProdutos" layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FORNECEDORES" />
+      <TableView fx:id="tbvFornecedores" layoutX="68.0" layoutY="88.0" prefHeight="224.0" prefWidth="669.0" style="-fx-border-radius: 10px;">
+         <columns>
+            <TableColumn fx:id="tbcNome" prefWidth="196.66669464111328" text="NOME" />
+            <TableColumn fx:id="tbcQuantidade" prefWidth="143.33331298828125" text="QTD. EM PRODUTOS" />
+            <TableColumn fx:id="tbcUnidades" prefWidth="189.99996948242188" text="QTD. TOTAL EM UNIDADES" />
+            <TableColumn fx:id="tbcDetalhes" minWidth="0.0" prefWidth="140.6666259765625" />
+         </columns>
+      </TableView>
+      <Button id="addBdButton" layoutX="679.0" layoutY="328.0" mnemonicParsing="false" onAction="#adicionarProduto" stylesheets="@css/style.css" text="Adicionar" />
+   </children>
+</AnchorPane>

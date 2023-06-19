@@ -66,4 +66,19 @@ public class TelaInicialController implements Initializable {
             stage.setTitle("ÁREA DO FORNECEDOR");
             stage.show();
     }
+    
+    @FXML
+    public void areaAdministrador(ActionEvent event) throws IOException{
+            Stage stage = (Stage) btnAreaFornecedor.getScene().getWindow();
+
+            //Carregar a nova cena
+            FXMLLoader fxmlLoader = new FXMLLoader(
+         App.class.getResource("AreaAdministrador.fxml"));
+            Scene fornecedor = new Scene(fxmlLoader.load());
+
+            //Exibir a nova cena
+            stage.setScene(fornecedor);
+            stage.setTitle("ÁREA DO ADMINISTRADOR");
+            stage.show();
+    }
 }
