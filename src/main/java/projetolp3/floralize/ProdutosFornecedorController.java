@@ -63,6 +63,8 @@ public class ProdutosFornecedorController implements Initializable {
     Connection connection = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
+    String nomeFornecedor = null;
+    int idFornecedor; 
 
     ObservableList<Produtos>  ListaProdutos = FXCollections.observableArrayList();
     /**
@@ -103,12 +105,15 @@ public class ProdutosFornecedorController implements Initializable {
     }
     
     public void checkForNewRecords() {
+        nomeFornecedor = LoginController.fornecedorLogado.getNome_fornecedor();
         int lastRecordCount = ListaProdutos.size();
 
         // Execute a query para obter a quantidade atual de registros
         try {
-            query = "SELECT COUNT(*) FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
+            //query = "SELECT COUNT(*) FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
+            query = "SELECT COUNT(*) FROM view_produtos WHERE nome_fornecedor = ?";
             preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nomeFornecedor);
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -124,16 +129,21 @@ public class ProdutosFornecedorController implements Initializable {
             Logger.getLogger(ProdutosFornecedorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-
+    
+ 
+    
     public void refreshTable() {
         try {
             ListaProdutos.clear();
+            nomeFornecedor = LoginController.fornecedorLogado.getNome_fornecedor();
+            //System.out.println("\t\t\tnomeFornecedor: " + nomeFornecedor);
             
-            query = "SELECT * FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
+            //query = "SELECT * FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
+            query = "SELECT * FROM view_produtos WHERE nome_fornecedor = ?";
             preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nomeFornecedor);
             resultSet = preparedStatement.executeQuery();
-
+            
             while (resultSet.next()) {
                 Produtos produto = new Produtos(
                     resultSet.getString("nome_produto"),
@@ -167,20 +177,22 @@ public class ProdutosFornecedorController implements Initializable {
                             });
                             deleteButton.setOnAction(event -> {
                                 try {
-                                    String deleteQuery = "DELETE FROM produtos WHERE fornecedor_id = 1 AND nome = ?";
+                                    idFornecedor = LoginController.fornecedorLogado.getId();
+                                    String deleteQuery = "DELETE FROM produtos WHERE fornecedor_id = ? AND nome = ?";
                                     preparedStatement = connection.prepareStatement(deleteQuery);
                                     //preparedStatement.setInt(1, p.getId_fornecedor());
-                                    preparedStatement.setString(1, p.getNome_produto());
+                                    preparedStatement.setInt(1, idFornecedor);
+                                    preparedStatement.setString(2, p.getNome_produto());
 
                                     // Execute the delete query
                                     int rowsAffected = preparedStatement.executeUpdate();
 
                                     if (rowsAffected > 0) {
-                                        System.out.println("Product deleted successfully.");
+                                        System.out.println("Produto deletado com sucesso!");
                                         // Refresh the table to reflect the changes
                                         refreshTable();
                                     } else {
-                                        System.out.println("Failed to delete product.");
+                                        System.out.println("Falha ao deletar o produto!");
                                     }
                                 } catch (SQLException ex) {
                                     Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);

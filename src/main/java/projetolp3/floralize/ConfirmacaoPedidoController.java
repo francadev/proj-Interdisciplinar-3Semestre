@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package projetolp3.floralize;
 
 import java.io.IOException;
@@ -47,7 +43,7 @@ import projetolp3.floralize.model.ItemCarrinho;
  * @author r0039435
  */
 public class ConfirmacaoPedidoController implements Initializable {
-    
+
     @FXML
     private AnchorPane anchorPane;
 
@@ -74,30 +70,41 @@ public class ConfirmacaoPedidoController implements Initializable {
 
     @FXML
     private TableView<ItemCarrinho> tbvCompra;
-    
+
+    @FXML
+    private Label lb_erro;
+
     AppState appState = AppState.getInstance();
     Set<ItemCarrinho> carrinho = appState.getCarrinho();
-    
+
     ConexaoMySQL conexao = new ConexaoMySQL();
-    
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) { 
+    public void initialize(URL url, ResourceBundle rb) {
         refreshTableCarrinho();
-    }    
-    
-    public void confirmarPedido() throws IOException {
-        insertItensPedido();
-        updateProdutos();
-        criarPedidos();
-        openPopUp();
     }
 
-    
-    public void voltarProdutos() throws IOException{
-        Pane pane = FXMLLoader.load(App.class.getResource("Produtos.fxml"));  
+    public void confirmarPedido() throws IOException {
+
+        if (carrinho.isEmpty()) {
+            // O carrinho está vazio, exibir uma mensagem de erro
+            lb_erro.setText("O carrinho está vazio. Adicione itens antes de confirmar o pedido.");
+        } else {
+
+            insertItensPedido();
+            updateProdutos();
+            criarPedidos();
+            openPopUp();
+
+        }
+
+    }
+
+    public void voltarProdutos() throws IOException {
+        Pane pane = FXMLLoader.load(App.class.getResource("Produtos.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
-    
+
     public void refreshTableCarrinho() {
         tbvCompra.getItems().clear();
         tbcNome.setCellValueFactory(new PropertyValueFactory<>("nomeProduto"));
@@ -115,8 +122,8 @@ public class ConfirmacaoPedidoController implements Initializable {
 
         tbcBtnAdicional.setCellFactory(col -> {
             TableCell<ItemCarrinho, String> cell = new TableCell<>() {
-                final Button deleteButton = new Button ("Excluir");
-                
+                final Button deleteButton = new Button("Excluir");
+
                 {
                     deleteButton.setOnAction(event -> {
                         ItemCarrinho item = getTableView().getItems().get(getIndex());
@@ -125,9 +132,9 @@ public class ConfirmacaoPedidoController implements Initializable {
                         appState.setQuantidadeAtualizada(item.getNomeProduto(), quantidadeAtualizada);
                         carrinho.remove(item);
                         refreshTableCarrinho();
-                        
+
                     });
-                    
+
                     deleteButton.setId("deleteButton");
                 }
 
@@ -145,7 +152,6 @@ public class ConfirmacaoPedidoController implements Initializable {
             return cell;
         });
 
-
         double total = 0.0;
         for (ItemCarrinho items : carrinho) {
             total += items.getPreco() * items.getQuantidade();
@@ -154,7 +160,7 @@ public class ConfirmacaoPedidoController implements Initializable {
 
         tbvCompra.getItems().addAll(carrinho);
     }
-    
+
     public void updateProdutos() throws IOException {
         try (Connection connection = conexao.getConnection()) {
             for (ItemCarrinho item : carrinho) {
@@ -175,26 +181,26 @@ public class ConfirmacaoPedidoController implements Initializable {
             // Exibindo uma mensagem de sucesso
             System.out.println("Produtos atualizados com sucesso!");
             carrinho.clear();
-        
+
             // Retornar à tela de produtos
             Pane pane = FXMLLoader.load(App.class.getResource("Produtos.fxml"));
             anchorPane.getChildren().setAll(pane);
-            
+
         } catch (SQLException e) {
             // Exibindo uma mensagem de erro
             System.err.println("Ocorreu um erro ao atualizar os produtos: " + e.getMessage());
         }
     }
-    
+
     public void insertItensPedido() {
-       
+
         try (Connection connection = conexao.getConnection()) {
             int lastId = getLastItemId();
             String query = "INSERT INTO ItensPedido (id, produto_id, fornecedor_id, preco_unitario, quantidade) VALUES (?, ?, ?, ?, ?)";
 
             for (ItemCarrinho item : carrinho) {
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
-                    statement.setInt(1, lastId +1);
+                    statement.setInt(1, lastId + 1);
                     statement.setInt(2, item.getId_produto());
                     statement.setInt(3, item.getId_fornecedor());
                     statement.setDouble(4, item.getPreco());
@@ -208,7 +214,8 @@ public class ConfirmacaoPedidoController implements Initializable {
             System.err.println("Ocorreu um erro ao inserir os itens de pedidos: " + e.getMessage());
         }
     }
-        public void openPopUp() {
+
+    public void openPopUp() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopUpConfirmacao.fxml"));
             Parent root = loader.load();
@@ -221,26 +228,26 @@ public class ConfirmacaoPedidoController implements Initializable {
             // Configure o conteúdo do pop-up
             Scene scene = new Scene(root);
             popupStage.setScene(scene);
-            
+
             // Defina a opacidade desejada para a janela pop-up (0.0 - totalmente transparente, 1.0 - totalmente opaco)
             popupStage.setOpacity(0.90);
-            
+
             popupStage.setOnHidden(event -> {
-            System.out.println("Pop-up fechado!");
+                System.out.println("Pop-up fechado!");
                 try {
                     voltarProdutos();
                 } catch (IOException ex) {
                     Logger.getLogger(ConfirmacaoPedidoController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-        });
-            
+            });
+
             // Exiba o pop-up
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-        
+
     public int getLastItemId() {
         int lastId = 0;
 
@@ -259,7 +266,7 @@ public class ConfirmacaoPedidoController implements Initializable {
 
         return lastId;
     }
-    
+
     public void criarPedidos() {
         int lastItemId = getLastItemId();
 
@@ -298,7 +305,4 @@ public class ConfirmacaoPedidoController implements Initializable {
         }
     }
 
-
 }
-
-

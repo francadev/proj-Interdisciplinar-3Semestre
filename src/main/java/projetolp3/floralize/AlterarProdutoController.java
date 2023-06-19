@@ -82,17 +82,9 @@ public class AlterarProdutoController implements Initializable {
         tfDescricao.setText(null);  
         tfQuantidade.setText(null);  
     }
-    
-    private void getQuery() {
-        if (update == false) {
-            
-        }else{
-            query = "UPDATE `produtos` SET `nome`=?,`preco`=?,`descricao`=?,`quantidade`= ? WHERE id = '"+produtoId+"'";
-        }
-    }
 
     private void inserirProduto() {
-        fornecedorId = 1;
+        fornecedorId = LoginController.fornecedorLogado.getId();
         query = "INSERT INTO `produtos`(`fornecedor_id`, `nome`, `preco`, `descricao`, `quantidade`) VALUES (?,?,?,?,?)";
         System.out.println("Entrou no insert");
         try {

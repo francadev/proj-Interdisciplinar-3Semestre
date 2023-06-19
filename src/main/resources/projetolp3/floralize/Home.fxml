@@ -7,7 +7,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="445.0" prefWidth="754.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.HomeController">
    <children>
-      <Label fx:id="lblHome" disable="true" layoutX="44.0" layoutY="19.0" text="HOME" />
+      <Label fx:id="lblHome" layoutX="44.0" layoutY="19.0" text="HOME" />
       <TextArea editable="false" layoutX="61.0" layoutY="48.0" prefHeight="374.0" prefWidth="587.0" style="-fx-background-color: transparent;" text="Bem-vindo ao Floralize!&#10;&#10;Somos um sistema de reservas feito para eventos e especializado em artigos de floricultura, sementes e itens de jardinagem. Se você é apaixonado por plantas e quer transformar seu espaço em um verdadeiro paraíso verde, você está no lugar certo. &#10;&#10;Com três anos de experiência, oferecemos uma ampla variedade de produtos de alta qualidade para transformar espaços em paraísos verdes. Nossa missão é ajudar os clientes a criar ambientes cheios de vida e beleza, portanto, nossos parceiros são escolhidos com carinho, visando garantir a qualidade e a satisfação.&#10;&#10;Se surgir alguma dúvida durante a navegação do sistema, estamos prontos para ajudar. Basta entrar em contato conosco pelo e-mail floralize@contato.br e nossa equipe terá prazer em responder às suas perguntas e oferecer orientações personalizadas.&#10;&#10;Agradecemos por escolher o Floralize como seu parceiro de jardinagem. Explore nossa aplicação e comece a florescer&#10;&#10;Equipe Floralize&#10;" wrapText="true">
          <opaqueInsets>
             <Insets top="5.0" />

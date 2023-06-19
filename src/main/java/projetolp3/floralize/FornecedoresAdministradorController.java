@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package projetolp3.floralize;
 
 import java.io.IOException;
@@ -26,9 +22,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Box;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -53,10 +47,10 @@ public class FornecedoresAdministradorController implements Initializable {
     private TableColumn<Fornecedores, String> tbcNome;
 
     @FXML
-    private TableColumn<Fornecedores, String> tbcQuantidade;
+    private TableColumn<Fornecedores, String> tbcCPF;
 
     @FXML
-    private TableColumn<Fornecedores, String> tbcUnidades;
+    private TableColumn<Fornecedores, String> tbcArea;
 
     @FXML
     private TableView<Fornecedores> tbvFornecedores;
@@ -78,18 +72,15 @@ public class FornecedoresAdministradorController implements Initializable {
         connection = new ConexaoMySQL().getConnection();
         refreshTable();
         
-        tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome_fornecedor"));
-        tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("qtd"));
-        tbcUnidades.setCellValueFactory(new PropertyValueFactory<>("unidades"));
+        tbcNome.setCellValueFactory(new PropertyValueFactory<>("Nome_fornecedor"));
+        tbcCPF.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+        tbcArea.setCellValueFactory(new PropertyValueFactory<>("Area"));
     }
     
     public void adicionarProduto() {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("AlterarFornecedor.fxml"));
         try {
             Parent parent = fxmlLoader.load();
-            //AlterarProdutoController alterarProdutoController = fxmlLoader.getController();
-            //alterarProdutoController.setProdutosFornecedorController(this); // Pass the reference to the controller
-
             Stage stage = new Stage();
             stage.setScene(new Scene(parent));
             stage.initStyle(StageStyle.UTILITY);
@@ -104,15 +95,16 @@ public class FornecedoresAdministradorController implements Initializable {
         try {
             ListaFornecedores.clear();
             
-            query = "SELECT * FROM `view_fornecedores`";
+            query = "SELECT id, nome,cpf_cnpj, area FROM fornecedores;";
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
             
             while (resultSet.next()){
                 ListaFornecedores.add(new Fornecedores(
-                    resultSet.getString("nome_fornecedor"),
-                    resultSet.getInt("qtd"),
-                    resultSet.getInt("unidades")));
+                    resultSet.getInt("id"),
+                    resultSet.getString("nome"),
+                    resultSet.getString("cpf_cnpj"),
+                    resultSet.getString("area")));
                 tbvFornecedores.setItems(ListaFornecedores);
 
                             
@@ -133,14 +125,33 @@ public class FornecedoresAdministradorController implements Initializable {
                         editButton.setId("editButton");
                         deleteButton.setId("deleteButton");
                         
-                        Fornecedores f = getTableView().getItems().get(getIndex());
+                        //Fornecedores f = getTableView().getItems().get(getIndex());
            
                         editButton.setOnAction(event ->{
                             
                         });
                         
                         deleteButton.setOnAction(event ->{
-                            
+                            Fornecedores f = getTableView().getItems().get(getIndex());
+                            System.out.println("f.getId(): " + f.getId());
+                            try {
+                                String deleteQuery = "DELETE FROM fornecedores WHERE id = ?";
+                                preparedStatement = connection.prepareStatement(deleteQuery);
+                                preparedStatement.setInt(1, f.getId());
+
+                                // Execute the delete query
+                                int rowsAffected = preparedStatement.executeUpdate();
+
+                                if (rowsAffected > 0) {
+                                    System.out.println("Produto deletado com sucesso!");
+                                    // Refresh the table to reflect the changes
+                                    refreshTable();
+                                } else {
+                                    System.out.println("Falha ao deletar o produto!");
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         });
                         HBox managebtn = new HBox(editButton, deleteButton);
                         managebtn.setStyle("-fx-alignment:center");
@@ -159,5 +170,4 @@ public class FornecedoresAdministradorController implements Initializable {
             Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

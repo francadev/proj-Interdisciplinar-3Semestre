@@ -1,23 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package projetolp3.floralize.model;
 
 /**
  *
  * @author r0039435
  */
+
+
 public class Fornecedores {
-    
     private String nome_fornecedor;
     private int qtd;
     private int unidades;
+    private String cpf;
+    private String area;
+    private int id;
+    
+    public Fornecedores() {
+    }
 
     public Fornecedores(String nome_fornecedor, int qtd, int unidades) {
         this.nome_fornecedor = nome_fornecedor;
         this.qtd = qtd;
         this.unidades = unidades;
+    }
+
+    public Fornecedores(int id, String nome_fornecedor, String cpf, String area) {
+        this.nome_fornecedor = nome_fornecedor;
+        this.cpf = cpf;
+        this.area = area;
+        this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getNome_fornecedor() {
@@ -42,8 +68,14 @@ public class Fornecedores {
 
     public void setUnidades(int unidades) {
         this.unidades = unidades;
+        
+        
     }
-    
-    
-    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
