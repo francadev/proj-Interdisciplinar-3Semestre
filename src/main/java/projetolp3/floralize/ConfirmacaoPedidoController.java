@@ -1,16 +1,13 @@
 package projetolp3.floralize;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -27,12 +24,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import projetolp3.floralize.bd.ConexaoMySQL;
 import projetolp3.floralize.model.AppState;
 import projetolp3.floralize.model.ItemCarrinho;
@@ -73,6 +70,12 @@ public class ConfirmacaoPedidoController implements Initializable {
 
     @FXML
     private Label lb_erro;
+    
+    @FXML
+    private TextField tfEmail;
+
+    @FXML
+    private TextField tfNome;
 
     AppState appState = AppState.getInstance();
     Set<ItemCarrinho> carrinho = appState.getCarrinho();
@@ -84,20 +87,21 @@ public class ConfirmacaoPedidoController implements Initializable {
         refreshTableCarrinho();
     }
 
-    public void confirmarPedido() throws IOException {
+    public void confirmarPedido() throws IOException, SQLException {
 
         if (carrinho.isEmpty()) {
             // O carrinho está vazio, exibir uma mensagem de erro
             lb_erro.setText("O carrinho está vazio. Adicione itens antes de confirmar o pedido.");
         } else {
-
-            insertItensPedido();
-            updateProdutos();
-            criarPedidos();
-            openPopUp();
-
+            if (!tfNome.getText().isEmpty() && !tfEmail.getText().isEmpty()){
+                insertItensPedido();
+                updateProdutos();
+                inserirCliente();
+                openPopUp();
+            }else{
+                lb_erro.setText("Digite todos os dados para a retirada.");
+            }
         }
-
     }
 
     public void voltarProdutos() throws IOException {
@@ -111,9 +115,8 @@ public class ConfirmacaoPedidoController implements Initializable {
         tbcFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
         tbcPreco.setCellValueFactory(new PropertyValueFactory<>("preco"));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
-        //tbcTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
 
-        // Define a fábrica de valores para a coluna tbcTotal
+        // Define valores para a coluna tbcTotal
         tbcTotal.setCellValueFactory(cellData -> {
             ItemCarrinho item = cellData.getValue();
             double total = item.getPreco() * item.getQuantidade();
@@ -126,6 +129,7 @@ public class ConfirmacaoPedidoController implements Initializable {
 
                 {
                     deleteButton.setOnAction(event -> {
+                        //apafa os itens do carrinho e volta a quantidade
                         ItemCarrinho item = getTableView().getItems().get(getIndex());
                         int quantidadeAtualizada = appState.getQuantidadeAtualizada(item.getNomeProduto());
                         quantidadeAtualizada += item.getQuantidade();
@@ -134,7 +138,6 @@ public class ConfirmacaoPedidoController implements Initializable {
                         refreshTableCarrinho();
 
                     });
-
                     deleteButton.setId("deleteButton");
                 }
 
@@ -152,12 +155,14 @@ public class ConfirmacaoPedidoController implements Initializable {
             return cell;
         });
 
+        //multiplicacao para o total
         double total = 0.0;
-        for (ItemCarrinho items : carrinho) {
-            total += items.getPreco() * items.getQuantidade();
+        for (ItemCarrinho item : carrinho) {
+            total += item.getPreco() * item.getQuantidade();
         }
-        lblTotal.setText(String.valueOf(total));
-
+        BigDecimal totalArredondado = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+        double totalFinal = totalArredondado.doubleValue();
+        lblTotal.setText(String.valueOf(totalFinal));
         tbvCompra.getItems().addAll(carrinho);
     }
 
@@ -196,7 +201,7 @@ public class ConfirmacaoPedidoController implements Initializable {
 
         try (Connection connection = conexao.getConnection()) {
             int lastId = getLastItemId();
-            String query = "INSERT INTO ItensPedido (id, produto_id, fornecedor_id, preco_unitario, quantidade) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO ItensPedido (pedido_id, produto_id, fornecedor_id, preco_unitario, quantidade) VALUES (?, ?, ?, ?, ?)";
 
             for (ItemCarrinho item : carrinho) {
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -217,8 +222,12 @@ public class ConfirmacaoPedidoController implements Initializable {
 
     public void openPopUp() {
         try {
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopUpConfirmacao.fxml"));
             Parent root = loader.load();
+            
+            PopUpConfirmacaoController popUpConfirmacaoController = loader.getController();
+            popUpConfirmacaoController.setTextField(getLastItemId(), getLocaisRetirada());
 
             // Crie um novo Stage (janela) para o pop-up
             Stage popupStage = new Stage();
@@ -229,8 +238,7 @@ public class ConfirmacaoPedidoController implements Initializable {
             Scene scene = new Scene(root);
             popupStage.setScene(scene);
 
-            // Defina a opacidade desejada para a janela pop-up (0.0 - totalmente transparente, 1.0 - totalmente opaco)
-            popupStage.setOpacity(0.90);
+            popupStage.setOpacity(0.95);
 
             popupStage.setOnHidden(event -> {
                 System.out.println("Pop-up fechado!");
@@ -248,16 +256,40 @@ public class ConfirmacaoPedidoController implements Initializable {
         }
     }
 
+    public String getLocaisRetirada() {
+        String locaisRetirada = "";
+        int lastId = getLastItemId();
+
+        try (Connection connection = conexao.getConnection()) {
+            String query = "SELECT GROUP_CONCAT(area SEPARATOR '; ') AS areas_concatenadas FROM fornecedores "
+                            + "WHERE id IN (SELECT fornecedor_id FROM itenspedido WHERE pedido_id = ?)";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, lastId);
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    locaisRetirada = resultSet.getString("areas_concatenadas");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return locaisRetirada;
+    }
+
+    
     public int getLastItemId() {
         int lastId = 0;
 
         try (Connection connection = conexao.getConnection()) {
-            String query = "SELECT id FROM ItensPedido ORDER BY id DESC LIMIT 1";
+            String query = "SELECT pedido_id FROM ItensPedido ORDER BY id DESC LIMIT 1";
 
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
-                    lastId = resultSet.getInt("id");
+                    lastId = resultSet.getInt("pedido_id");
                 }
             }
         } catch (SQLException e) {
@@ -267,42 +299,37 @@ public class ConfirmacaoPedidoController implements Initializable {
         return lastId;
     }
 
-    public void criarPedidos() {
-        int lastItemId = getLastItemId();
+    public int getLastItemIdCliente() {
+        int lastIdCliente = 0;
 
         try (Connection connection = conexao.getConnection()) {
-            // Recuperar os fornecedores presentes no carrinho
-            Set<Integer> fornecedores = new HashSet<>();
-            for (ItemCarrinho item : carrinho) {
-                fornecedores.add(item.getId_fornecedor());
-            }
+            String query = "SELECT id FROM clientes ORDER BY id DESC LIMIT 1";
 
-            // Criar um pedido para cada fornecedor presente no carrinho
-            for (Integer fornecedorId : fornecedores) {
-                // Calcular o preço total do pedido para o fornecedor atual
-                double precoTotal = 0.0;
-                for (ItemCarrinho item : carrinho) {
-                    if (item.getId_fornecedor() == fornecedorId) {
-                        precoTotal += item.getPreco() * item.getQuantidade();
-                    }
-                }
-
-                // Inserir o pedido na tabela Pedidos
-                String query = "INSERT INTO Pedidos (cliente_id, fornecedor_id, itenspedido_id, preco_total, status) VALUES (?, ?, ?, ?, 'pendente')";
-
-                try (PreparedStatement statement = connection.prepareStatement(query)) {
-                    statement.setInt(1, 1);
-                    statement.setInt(2, fornecedorId);
-                    statement.setInt(3, lastItemId); // Corrigido: usar lastItemId como itenspedido_id
-                    statement.setDouble(4, precoTotal);
-                    statement.executeUpdate();
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    lastIdCliente = resultSet.getInt("id");
                 }
             }
-
-            System.out.println("Pedidos criados com sucesso!");
         } catch (SQLException e) {
-            System.err.println("Ocorreu um erro ao criar os pedidos: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return lastIdCliente;
+    }
+    
+    public void inserirCliente() throws SQLException {
+        try (Connection connection = conexao.getConnection()) {
+            String query = "INSERT INTO clientes (nome, email) VALUES (?, ?)";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, tfNome.getText());
+                statement.setString(2, tfEmail.getText());
+                statement.executeUpdate(); // Executar a inserção
+            }
+            System.out.println("Cliente inserido com sucesso!");
+        } catch (SQLException e) {
+            System.err.println("Ocorreu um erro ao inserir o cliente: " + e.getMessage());
         }
     }
-
 }

@@ -30,6 +30,5 @@ public class HomeController implements Initializable {
         // TODO
         AppState appState = AppState.getInstance();
         Set<ItemCarrinho> carrinho = appState.getCarrinho();
-
     }        
 }

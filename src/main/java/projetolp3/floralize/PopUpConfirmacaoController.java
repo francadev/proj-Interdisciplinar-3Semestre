@@ -8,11 +8,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -43,5 +41,10 @@ public class PopUpConfirmacaoController implements Initializable {
     public void fecharPopUp() throws IOException{
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         stage.close();
+    }
+    
+    public void setTextField(int numPedido, String locaisRetirada){
+        lblNumPedido.setText(String.valueOf(numPedido));
+        lblOndeRetirar.setText(locaisRetirada);
     }
 }

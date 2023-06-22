@@ -5,10 +5,15 @@
 package projetolp3.floralize;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import projetolp3.floralize.bd.ConexaoMySQL;
 
 /**
  * FXML Controller class
@@ -24,19 +29,44 @@ public class HomeFornecedorController implements Initializable {
     @FXML
     private Label lblMensagem;
     
-    /*
-    private LoginController loginController;
-
-    public void setLoginController(LoginController loginController) {
-        this.loginController = loginController;
-    }*/
+    @FXML
+    private Label totalVendas;
+    
+    ConexaoMySQL conexao = new ConexaoMySQL();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //int fornecedorId = loginController.getLoggedInFornecedorId();
-        String mensagem = lblMensagem.getText(); // Obtém o texto existente na Label
-        String novaMensagem = mensagem + String.valueOf(LoginController.fornecedorLogado.getNome_fornecedor()); // Acrescenta o novo texto
+        // Obtém o texto existente na Label
+        String mensagem = lblMensagem.getText(); 
+        // Acrescenta o nome do fornecesor
+        String novaMensagem = mensagem + String.valueOf(LoginController.fornecedorLogado.getNome_fornecedor()); 
 
         lblMensagem.setText(novaMensagem);  
+        
+        double valorTotalVendas = getTotalVendas();
+        totalVendas.setText(Double.toString(valorTotalVendas));
+    }
+    
+    public double getTotalVendas() {
+        // Declaração inicial da variável
+        double tVendas = 0.0; 
+
+        try (Connection connection = conexao.getConnection()) {
+            String query = "SELECT totalVendas(?)";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, LoginController.fornecedorLogado.getId());
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        tVendas = resultSet.getDouble(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ocorreu um erro ao chamar a função totalVendas: " + e.getMessage());
+        }
+        // Retorna o valor da variável
+        return tVendas; 
     }
 }

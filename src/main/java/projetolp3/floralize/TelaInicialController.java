@@ -25,41 +25,39 @@ public class TelaInicialController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
     @FXML
     private Button btnAreaCompras;
 
     @FXML
     private Button btnAreaFornecedor;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     public void areaCompras(ActionEvent event) throws IOException {
-            Stage stage = (Stage) btnAreaCompras.getScene().getWindow();
+        Stage stage = (Stage) btnAreaCompras.getScene().getWindow();
 
-            //Carregar a nova cena
-            FXMLLoader fxmlLoader = new FXMLLoader(
-         App.class.getResource("AreaCompras.fxml"));
-            Scene compras = new Scene(fxmlLoader.load());
+        //Carregar a nova cena
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                App.class.getResource("AreaCompras.fxml"));
+        Scene compras = new Scene(fxmlLoader.load());
 
-            //Exibir a nova cena
-            stage.setScene(compras);
-            stage.setTitle("ÁREA DE COMPRAS");
-            stage.show();
+        //Exibir a nova cena
+        stage.setScene(compras);
+        stage.setTitle("ÁREA DE COMPRAS");
+        stage.show();
     }
-    
+
     @FXML
-    public void areaFornecedor(ActionEvent event) throws IOException{
-        
+    public void areaFornecedor(ActionEvent event) throws IOException {
         Stage stage = (Stage) btnAreaFornecedor.getScene().getWindow();
 
         //Carregar a nova cena
         FXMLLoader fxmlLoader = new FXMLLoader(
-        App.class.getResource("Login.fxml"));
+                App.class.getResource("Login.fxml"));
         Scene login = new Scene(fxmlLoader.load());
 
         //Exibir a nova cena
@@ -67,14 +65,14 @@ public class TelaInicialController implements Initializable {
         stage.setTitle("Fazer login");
         stage.show();
     }
-    
+
     @FXML
-    public void areaAdministrador(ActionEvent event) throws IOException{
+    public void areaAdministrador(ActionEvent event) throws IOException {
         Stage stage = (Stage) btnAreaFornecedor.getScene().getWindow();
 
         //Carregar a nova cena
         FXMLLoader fxmlLoader = new FXMLLoader(
-        App.class.getResource("Login.fxml"));
+                App.class.getResource("Login.fxml"));
         Scene login = new Scene(fxmlLoader.load());
 
         //Exibir a nova cena

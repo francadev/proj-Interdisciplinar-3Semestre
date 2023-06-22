@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -32,5 +33,11 @@
       </Button>
       <Label fx:id="lblQtdCarrinho" layoutX="736.0" layoutY="4.0" />
       <Label fx:id="lblMensagemErro" layoutX="130.0" layoutY="320.0" />
+      <TextField fx:id="tfPesquisar" layoutX="504.0" layoutY="50.0" prefHeight="25.0" prefWidth="186.0" promptText="buscar" />
+      <ImageView fitHeight="17.0" fitWidth="27.0" layoutX="667.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagens/icon-lupa.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

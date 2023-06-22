@@ -8,25 +8,23 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
-
-/*se usado consulta no banco*/
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import projetolp3.floralize.bd.ConexaoMySQL;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -38,8 +36,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -82,7 +78,7 @@ public class ProdutosController implements Initializable {
     private TableColumn<Produtos, String> tbcDetalhes;
 
     @FXML
-    private Text txtProdutos;
+    private TextField tfPesquisar;
 
     String query = null;
     Connection connection = null;
@@ -90,7 +86,6 @@ public class ProdutosController implements Initializable {
     ResultSet resultSet = null;
 
     ObservableList<Produtos> ListaProdutos = FXCollections.observableArrayList();
-    //Set<ItemCarrinho> carrinho = new LinkedHashSet<>(); 
     private AppState appState = AppState.getInstance();
 
     /**
@@ -100,14 +95,31 @@ public class ProdutosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         loadDataProdutos();
         refreshQtdCarrinho();
+
+        tfPesquisar.textProperty().addListener((observable, oldValue, newValue) -> {
+            realizarPesquisa(newValue);
+        });
+    }
+
+    private void realizarPesquisa(String termo) {
+        //busca por fornecedores
+        List<Produtos> resultados = new ArrayList<>();
+        for (Produtos produto : ListaProdutos) {
+            if (produto.getNome_produto().contains(termo)
+                    || produto.getNome_fornecedor().contains(termo)
+                    || produto.getDescricao().contains(termo)) {
+                resultados.add(produto);
+            }
+        }
+        // Atualize a TableView com os resultados da pesquisa
+        ObservableList<Produtos> observableResultados = FXCollections.observableArrayList(resultados);
+        tbvProdutos.setItems(observableResultados);
     }
 
     public void loadDataProdutos() {
-
         connection = new ConexaoMySQL().getConnection();
         ListaProdutos.clear();
         refreshTable();
-
         tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome_produto"));
         tbcFornecedor.setCellValueFactory(new PropertyValueFactory<>("nome_fornecedor"));
         tbcPreco.setCellValueFactory(new PropertyValueFactory<>("qtd"));
@@ -133,7 +145,6 @@ public class ProdutosController implements Initializable {
 
         appState.setQuantidadeAtualizada(produto.getNome_produto(), novaQuantidade);
     }
-
 
     public void refreshTable() {
         try {
@@ -170,13 +181,13 @@ public class ProdutosController implements Initializable {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
-                        //that cell created only on non-empty rows
+                        //célula criada apenas em linhas não vazias
                         if (empty) {
                             setGraphic(null);
                             setText(null);
 
                         } else {
-
+                            //cria os botoes de adicionar, ver + e seus ids para o css
                             final Button addButton = new Button("Adicionar");
                             final Button detailButton = new Button("Ver +");
                             detailButton.setId("detailButton");
@@ -186,20 +197,22 @@ public class ProdutosController implements Initializable {
                             addButton.setOnAction(event -> {
                                 Set<ItemCarrinho> carrinho = appState.getCarrinho();
 
+                                //abre uma tela para inserir a quantidade
                                 Stage stage = new Stage();
                                 VBox vbox = new VBox();
                                 Label quantityLabel = new Label("Digite a quantidade:");
                                 TextField quantityField = new TextField();
                                 Button confirmButton = new Button("Confirmar");
 
+                                //estilo da tela
                                 vbox.getStyleClass().add("container");
                                 quantityLabel.getStyleClass().add("label");
                                 quantityField.getStyleClass().add("textfield");
                                 confirmButton.getStyleClass().add("button");
 
                                 confirmButton.setOnAction(confirmEvent -> {
+                                    //adiciona ao carrinho junto as verificações
                                     int quantidade = Integer.parseInt(quantityField.getText());
-
                                     ItemCarrinho novoItem = new ItemCarrinho(p.getNome_produto(), p.getNome_fornecedor(), p.getPreco(), quantidade, p.getId_produto(), p.getId_fornecedor());
 
                                     if (carrinho.contains(novoItem)) {
@@ -230,7 +243,6 @@ public class ProdutosController implements Initializable {
                                     scene.getStylesheets().add(getClass().getResource("/projetolp3/floralize/css/styleConfirm.css").toExternalForm());
                                     stage.showAndWait();
                                 }
-
                             });
 
                             detailButton.setOnAction(event -> {
@@ -243,8 +255,10 @@ public class ProdutosController implements Initializable {
                                 } catch (IOException ex) {
                                     Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-
+                                
+                                //abre a tela com detalhes daquele produto em especifico
                                 DetalhesProdutosController detalhesProdutosController = fxmlLoader.getController();
+                                //
                                 detalhesProdutosController.setUpdate(true);
                                 detalhesProdutosController.setTextField(p.getNome_produto(), p.getNome_fornecedor(), p.getQtd(), p.getPreco(), p.getDescricao());
                                 Parent parent = fxmlLoader.getRoot();
@@ -254,9 +268,7 @@ public class ProdutosController implements Initializable {
                                 stage.show();
 
                             });
-                            //setGraphic(editButton);
-                            //setText(null);
-
+                            //configura a posicao dos botoes
                             HBox managebtn = new HBox(addButton, detailButton);
                             managebtn.setStyle("-fx-alignment:center");
                             HBox.setMargin(addButton, new Insets(2, 2, 0, 3));

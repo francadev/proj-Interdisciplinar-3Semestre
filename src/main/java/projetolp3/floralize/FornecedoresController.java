@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,8 +26,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -58,6 +60,9 @@ public class FornecedoresController implements Initializable {
     @FXML
     private TableView<Fornecedores> tbvFornecedores;
     
+    @FXML
+    private TextField tfPesquisar;
+    
     String query = null;
     Connection connection = null;
     PreparedStatement preparedStatement = null;
@@ -68,7 +73,26 @@ public class FornecedoresController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadDataFornecedores();
-    }    
+        tfPesquisar.textProperty().addListener((observable, oldValue, newValue) -> {
+            realizarPesquisa(newValue);
+        });
+    }
+    
+    private void realizarPesquisa(String termo) {
+        List<Fornecedores> resultados = new ArrayList<>();
+
+        for (Fornecedores fornecedores : ListaFornecedores) {
+            if (
+                fornecedores.getNome_fornecedor().contains(termo)
+                ) {
+                resultados.add(fornecedores);
+            }
+        }
+
+        // Atualiza a TableView com os resultados da pesquisa
+        ObservableList<Fornecedores> observableResultados = FXCollections.observableArrayList(resultados);
+        tbvFornecedores.setItems(observableResultados);
+    }
     
     public void loadDataFornecedores(){
         
@@ -107,7 +131,7 @@ public class FornecedoresController implements Initializable {
                         setText(null);
 
                     } else {
-                        
+                        //cria onotao de vermais
                         final Button detailButton = new Button ("Ver +");
                         detailButton.setId("detailButton");
                         Fornecedores f = getTableView().getItems().get(getIndex());
@@ -121,9 +145,9 @@ public class FornecedoresController implements Initializable {
                             } catch (IOException ex) {
                                 Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-
+                            
+                            //carrega a nova tela passando os parametros para a proxima
                             DetalhesFornecedoresController detalhesFornecedoresController = fxmlLoader.getController();
-                            //detalhesProdutosController.setUpdate(true);
                             detalhesFornecedoresController.setTextField(f.getNome_fornecedor(), f.getQtd(), f.getUnidades());
                             Parent parent = fxmlLoader.getRoot();
                             Stage stage = new Stage();

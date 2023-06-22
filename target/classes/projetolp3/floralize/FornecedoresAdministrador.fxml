@@ -3,6 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
@@ -18,5 +21,11 @@
          </columns>
       </TableView>
       <Button id="addBdButton" layoutX="679.0" layoutY="328.0" mnemonicParsing="false" onAction="#adicionarProduto" stylesheets="@css/style.css" text="Adicionar" />
+      <TextField fx:id="tfPesquisar" layoutX="524.0" layoutY="52.0" prefHeight="25.0" prefWidth="186.0" promptText="buscar" />
+      <ImageView fitHeight="17.0" fitWidth="27.0" layoutX="687.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagens/icon-lupa.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

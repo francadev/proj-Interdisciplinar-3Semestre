@@ -67,6 +67,5 @@ public class DetalhesProdutosController implements Initializable {
         String precoString = "" + preco;
         lblPreco.setText(precoString);
         lblDescricao.setText(descricao);
-    } 
-    
+    }
 }

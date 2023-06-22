@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="378.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetolp3.floralize.PedidosFornecedorController">
+   <children>
+      <Text layoutX="41.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pedidos" />
+      <TableView fx:id="tbvPedidos" layoutX="62.0" layoutY="88.0" prefHeight="224.0" prefWidth="541.0" style="-fx-border-radius: 10px;">
+         <columns>
+            <TableColumn fx:id="tbcNomeCliente" prefWidth="157.33334350585938" text="Nome_cliente" />
+            <TableColumn fx:id="tbcNomeProduto" prefWidth="109.60003662109375" text="Nome_Produto" />
+            <TableColumn fx:id="tbcQuantidade" prefWidth="139.19997558593752" text="Quantidade" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

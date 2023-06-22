@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import projetolp3.floralize.bd.ConexaoMySQL;
 import projetolp3.floralize.model.Fornecedores;
@@ -59,8 +58,6 @@ public class LoginController implements Initializable {
         String login = tfUsuario.getText();
         String senha = tFSenha.getText();
 
-        // Assuming you have a database connection and the necessary imports
-
         try {
             if (login.equals("admin") && senha.equals("admin")) {
                 Stage stage = (Stage) btnEntrar.getScene().getWindow();
@@ -81,34 +78,31 @@ public class LoginController implements Initializable {
                 statement.setString(1, login);
                 statement.setString(2, senha);
 
-                // Execute the query
+                //executa a query
                 resultSet = statement.executeQuery();
 
                 if (resultSet.next()) {
-                    // Login successful
+                    // login com sucesso
                     lblMensagem.setText("Login feito com sucesso!");
-
                     fornecedorLogado.setNome_fornecedor(resultSet.getString("nome"));
                     fornecedorLogado.setId(resultSet.getInt("id"));
 
                     Stage stage = (Stage) btnEntrar.getScene().getWindow();
 
-                    //Carregar a nova cena
+                    //carregar a nova cena
                     FXMLLoader fxmlLoader = new FXMLLoader(
                     App.class.getResource("AreaFornecedor.fxml"));
                     Scene fornecedor = new Scene(fxmlLoader.load());
 
-                    //Exibir a nova cena
+                    //exibir a nova cena
                     stage.setScene(fornecedor);
                     stage.setTitle("ÁREA DO FORNECEDOR");
                     stage.show();
 
                 } else {
-                    // Login failed
+                    // caso o login 
                     lblMensagem.setText("Usuário ou senha incorretos");
                 }
-
-                // Close the ResultSet, PreparedStatement, and Connection
                 resultSet.close();
                 statement.close();
                 connection.close();

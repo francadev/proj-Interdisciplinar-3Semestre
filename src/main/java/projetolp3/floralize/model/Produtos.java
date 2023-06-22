@@ -19,17 +19,12 @@ public class Produtos {
     private int id_produto;
     private int id_fornecedor;
     
-    /*public Produtos(int id_produto, int id_fornecedor, double preco, int qtd) {
-        this.id_produto = id_produto;
-        this.id_fornecedor = id_fornecedor;
-        this.preco = preco;
-        this.qtd = qtd;
-    }*/
-    
     public Produtos(String nome_produto, int qtd) {
         this.nome_produto = nome_produto;
         this.qtd = qtd;
     }
+    
+    
     
     public Produtos(String nome_produto, double preco, int qtd) {
         this.nome_produto = nome_produto;

@@ -114,7 +114,6 @@ public class AlterarProdutoController implements Initializable {
                     return; 
                 }
             }
-
             // Inserir o produto
             preparedStatement.execute();
 

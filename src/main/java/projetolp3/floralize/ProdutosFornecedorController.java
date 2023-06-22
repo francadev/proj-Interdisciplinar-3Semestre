@@ -64,9 +64,10 @@ public class ProdutosFornecedorController implements Initializable {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     String nomeFornecedor = null;
-    int idFornecedor; 
+    int idFornecedor;
 
-    ObservableList<Produtos>  ListaProdutos = FXCollections.observableArrayList();
+    ObservableList<Produtos> ListaProdutos = FXCollections.observableArrayList();
+
     /**
      * Initializes the controller class.
      */
@@ -77,40 +78,38 @@ public class ProdutosFornecedorController implements Initializable {
     }
 
     public void loadDataProdutos() {
-
         connection = new ConexaoMySQL().getConnection();
+        
         ListaProdutos.clear();
         refreshTable();
-
         tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome_produto"));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("preco"));
         tbcPreco.setCellValueFactory(new PropertyValueFactory<>("qtd"));
     }
 
-  public void adicionarProduto() {
+    public void adicionarProduto() {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("AlterarProduto.fxml"));
         try {
             Parent parent = fxmlLoader.load();
             AlterarProdutoController alterarProdutoController = fxmlLoader.getController();
-            alterarProdutoController.setProdutosFornecedorController(this); // Pass the reference to the controller
+            alterarProdutoController.setProdutosFornecedorController(this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(parent));
             stage.initStyle(StageStyle.UTILITY);
-            stage.setOnHidden(event -> refreshTable()); // Add refreshTable() call when the window is closed
+            stage.setOnHidden(event -> refreshTable()); 
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(ProdutosFornecedorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void checkForNewRecords() {
         nomeFornecedor = LoginController.fornecedorLogado.getNome_fornecedor();
         int lastRecordCount = ListaProdutos.size();
-
-        // Execute a query para obter a quantidade atual de registros
+        
+        //identifica se novas linhas foram inseridas no tableview
         try {
-            //query = "SELECT COUNT(*) FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
             query = "SELECT COUNT(*) FROM view_produtos WHERE nome_fornecedor = ?";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, nomeFornecedor);
@@ -129,26 +128,22 @@ public class ProdutosFornecedorController implements Initializable {
             Logger.getLogger(ProdutosFornecedorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
- 
-    
+
     public void refreshTable() {
+        //atualiza o tableview
         try {
             ListaProdutos.clear();
             nomeFornecedor = LoginController.fornecedorLogado.getNome_fornecedor();
-            //System.out.println("\t\t\tnomeFornecedor: " + nomeFornecedor);
-            
-            //query = "SELECT * FROM view_produtos WHERE nome_fornecedor = 'Floricultura Flores Belas'";
             query = "SELECT * FROM view_produtos WHERE nome_fornecedor = ?";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, nomeFornecedor);
             resultSet = preparedStatement.executeQuery();
-            
+
             while (resultSet.next()) {
                 Produtos produto = new Produtos(
-                    resultSet.getString("nome_produto"),
-                    resultSet.getDouble("preco"),
-                    resultSet.getInt("qtd")   
+                        resultSet.getString("nome_produto"),
+                        resultSet.getDouble("preco"),
+                        resultSet.getInt("qtd")
                 );
                 ListaProdutos.add(produto);
             }
@@ -160,20 +155,20 @@ public class ProdutosFornecedorController implements Initializable {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
-                        //that cell created only on non-empty rows
+                        //célula criada apenas em linhas não vazias
                         if (empty) {
                             setGraphic(null);
                             setText(null);
 
                         } else {
-
+                            //cria os botoesde editar e deletar e define seus id para o css
                             final Button editButton = new Button("Editar");
                             final Button deleteButton = new Button("Deletar");
                             editButton.setId("editButton");
                             deleteButton.setId("deleteButton");
                             Produtos p = getTableView().getItems().get(getIndex());
                             editButton.setOnAction(event -> {
-                                
+
                             });
                             deleteButton.setOnAction(event -> {
                                 try {
@@ -184,12 +179,11 @@ public class ProdutosFornecedorController implements Initializable {
                                     preparedStatement.setInt(1, idFornecedor);
                                     preparedStatement.setString(2, p.getNome_produto());
 
-                                    // Execute the delete query
+                                    //para executar ao deletar
                                     int rowsAffected = preparedStatement.executeUpdate();
-
                                     if (rowsAffected > 0) {
                                         System.out.println("Produto deletado com sucesso!");
-                                        // Refresh the table to reflect the changes
+                                        //atualizar para os dados mais atualizados
                                         refreshTable();
                                     } else {
                                         System.out.println("Falha ao deletar o produto!");
@@ -197,13 +191,14 @@ public class ProdutosFornecedorController implements Initializable {
                                 } catch (SQLException ex) {
                                     Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                
-                            });
-                            
-                            editButton.setOnAction(event -> {
-                                
+
                             });
 
+                            editButton.setOnAction(event -> {
+                                //implementar
+                            });
+
+                            //configura alinhamento dos botoes
                             HBox managebtn = new HBox(editButton, deleteButton);
                             managebtn.setStyle("-fx-alignment:center");
                             HBox.setMargin(editButton, new Insets(2, 2, 0, 3));
@@ -216,6 +211,7 @@ public class ProdutosFornecedorController implements Initializable {
                 };
                 return cell;
             };
+            //criar e configurar as células individuais do tableview
             tbcDetalhes.setCellFactory(cellFactory);
         } catch (SQLException ex) {
             Logger.getLogger(ProdutosController.class.getName()).log(Level.SEVERE, null, ex);

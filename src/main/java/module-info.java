@@ -7,5 +7,4 @@ module projetolp3.floralize {
     opens projetolp3.floralize to javafx.fxml;
     exports projetolp3.floralize;
     opens projetolp3.floralize.model to javafx.base;
-
 }

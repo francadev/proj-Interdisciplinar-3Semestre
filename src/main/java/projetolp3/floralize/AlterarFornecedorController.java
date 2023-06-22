@@ -47,7 +47,7 @@ public class AlterarFornecedorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         // Definir evento para formatar o CPF enquanto é digitado
         tx_cpfcnpj.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > oldValue.length()) {
@@ -67,7 +67,7 @@ public class AlterarFornecedorController implements Initializable {
     public void cadastrarFornecedor(ActionEvent event) {
         try {
             connection = new ConexaoMySQL().getConnection();
-            String sql = "INSERT INTO Fornecedores (login, senha, nome, area,cpf_cnpj) VALUES (?, ?, ?, ?,?)";
+            String sql = "INSERT INTO Fornecedores (nome, login, senha, area,cpf_cnpj) VALUES (?, ?, ?, ?,?)";
             statement = connection.prepareStatement(sql);
             statement.setString(1, tx_nome.getText());
             statement.setString(2, tx_login.getText());
@@ -91,9 +91,7 @@ public class AlterarFornecedorController implements Initializable {
             }
         }
     }
-    
-    
-    
+
     public void limpar(ActionEvent event) {
         tx_nome.clear();
         tx_login.clear();
@@ -101,7 +99,6 @@ public class AlterarFornecedorController implements Initializable {
         tx_area.clear();
         tx_cpfcnpj.clear();
         lb_mensagem.setText("");
-    
-    }
 
+    }
 }

@@ -37,6 +37,9 @@ public class AreaFornecedorController implements Initializable {
 
     @FXML
     private Button btnProdutos;
+    
+    @FXML
+    private Button btnPedidos;
 
     @FXML
     private Button btnVoltar;
@@ -67,8 +70,16 @@ public class AreaFornecedorController implements Initializable {
             btnProdutos.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
         }
         
+        else if (actionEvent.getSource() == btnPedidos) {
+            telaPedidos(); 
+            disableStyle();
+            btnPedidos.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
+        }
+        
     }
     
+    
+    //abre os panes
     @FXML
     private void telaHome() throws IOException{     
         Pane pane = FXMLLoader.load(App.class.getResource("HomeFornecedor.fxml"));  
@@ -77,6 +88,12 @@ public class AreaFornecedorController implements Initializable {
     @FXML
     private void telaProdutos() throws IOException{     
         Pane pane = FXMLLoader.load(App.class.getResource("ProdutosFornecedor.fxml"));  
+        stackPane.getChildren().setAll(pane);
+    }
+    
+    @FXML
+    private void telaPedidos() throws IOException{     
+        Pane pane = FXMLLoader.load(App.class.getResource("PedidosFornecedor.fxml"));  
         stackPane.getChildren().setAll(pane);
     }
 
@@ -99,11 +116,19 @@ public class AreaFornecedorController implements Initializable {
         btnDados.setStyle("-fx-background-color: #FFFFFF;");
         btnHome.setStyle("-fx-background-color: #FFFFFF;");
         btnProdutos.setStyle("-fx-background-color: #FFFFFF;");
+        btnPedidos.setStyle("-fx-background-color: #FFFFFF;");
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       try {  
+            telaHome();
+            btnHome.setStyle("-fx-background-color: linear-gradient(to bottom, #f3f3f3, #ebeceb)");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        //Definir como pane principal (visível para o usuário)
+        paneHome.toFront();
     }    
     
 }
